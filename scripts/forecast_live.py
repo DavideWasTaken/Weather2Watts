@@ -18,8 +18,8 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from energybench.live import LIVE_MODELS, fetch, power_forecast  # noqa: E402
-from energybench.power import load_models  # noqa: E402
+from weather2watts.live import LIVE_MODELS, fetch, power_forecast  # noqa: E402
+from weather2watts.power import load_models  # noqa: E402
 
 COLORS = {"ECMWF IFS": "#202124", "ECMWF AIFS": "#1a73e8"}
 PANELS = ["Europe", "DE", "GB", "FR", "ES", "PL"]

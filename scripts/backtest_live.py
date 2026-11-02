@@ -21,11 +21,11 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from energybench.config import COUNTRIES  # noqa: E402
-from energybench.live import LIVE_MODELS, fetch_past, read_grib_wind, regrid  # noqa: E402
-from energybench.observed import capacity_factors, fetch_country  # noqa: E402
-from energybench.power import load_models  # noqa: E402
-from energybench.scoring import mae, recalibrate_cv  # noqa: E402
+from weather2watts.config import COUNTRIES  # noqa: E402
+from weather2watts.live import LIVE_MODELS, fetch_past, read_grib_wind, regrid  # noqa: E402
+from weather2watts.observed import capacity_factors, fetch_country  # noqa: E402
+from weather2watts.power import load_models  # noqa: E402
+from weather2watts.scoring import mae, recalibrate_cv  # noqa: E402
 
 LEAD_DAYS = [1, 3, 5]
 STEPS = [24 * d + h for d in LEAD_DAYS for h in (0, 6, 12, 18)]

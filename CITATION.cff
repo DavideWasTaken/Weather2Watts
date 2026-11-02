@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use Weather2Watts, please cite it as below."
+title: "Weather2Watts: an open benchmark of AI weather models on real wind power generation"
+abstract: >-
+  Forecasts from AI weather models (GraphCast, Pangu-Weather, FuXi, GenCast, ECMWF AIFS) and the
+  physics-based ECMWF IFS/HRES are converted to wind power and scored against observed hourly
+  generation in 15 European countries, with a daily live comparison of ECMWF AIFS and IFS.
+authors:
+  - family-names: Gaglione
+    given-names: Davide
+version: 0.1.0
+date-released: 2026-11-02
+license: MIT
+repository-code: "https://github.com/DavideWasTaken/Weather2Watts"
+keywords:
+  - weather forecasting
+  - wind power
+  - renewable energy
+  - AI weather prediction
+  - benchmark
+  - GraphCast
+  - ECMWF AIFS
+  - ENTSO-E

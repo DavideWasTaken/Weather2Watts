@@ -7,9 +7,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from energybench.config import COUNTRIES, EUROPE
-from energybench.power import RidgePower, country_cells, fit_with_validation
-from energybench.scoring import csi, mae, recalibrate_cv
+from weather2watts.config import COUNTRIES, EUROPE
+from weather2watts.power import RidgePower, country_cells, fit_with_validation
+from weather2watts.scoring import csi, mae, recalibrate_cv
 
 ROOT = Path(__file__).resolve().parents[1]
 LAT = np.arange(34.5, 72.1, 1.5)
@@ -75,7 +75,7 @@ def test_ridge_learns_power_curve():
 
 
 def test_regrid_matches_cell_mean():
-    from energybench.live import regrid
+    from weather2watts.live import regrid
 
     lat = 90 - 0.25 * np.arange(721)
     lon = -180 + 0.25 * np.arange(1440)
@@ -88,7 +88,7 @@ def test_regrid_matches_cell_mean():
 
 
 def test_energy_charts_parse_centres_hours():
-    from energybench.observed import parse
+    from weather2watts.observed import parse
 
     t0 = int(pd.Timestamp("2026-01-01T00:00").timestamp())
     secs = [t0 + 900 * i for i in range(8)]  # 15-min stamps 00:00 .. 01:45
@@ -102,7 +102,7 @@ def test_energy_charts_parse_centres_hours():
 
 
 def test_power_models_roundtrip(tmp_path):
-    from energybench.power import load_models, save_models
+    from weather2watts.power import load_models, save_models
 
     rng = np.random.default_rng(3)
     ws = rng.uniform(0, 15, (300, len(LAT), len(LON))).astype(np.float32)

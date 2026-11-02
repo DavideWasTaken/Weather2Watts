@@ -1,16 +1,25 @@
-# EnergyBench
+# Weather2Watts
+
+**An open benchmark of AI weather models on real wind power generation.**
+
+[![ci](https://github.com/DavideWasTaken/Weather2Watts/actions/workflows/ci.yml/badge.svg)](https://github.com/DavideWasTaken/Weather2Watts/actions/workflows/ci.yml)
+[![live forecast](https://github.com/DavideWasTaken/Weather2Watts/actions/workflows/live.yml/badge.svg)](results/live/latest.md)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![python](https://img.shields.io/badge/python-3.10%2B-blue)
 
 **AI weather models are scored on Z500 and 2 m temperature. Energy traders care about one thing:
-how many megawatts will the wind fleet produce?** EnergyBench scores AI and physics forecasts on
-that question, against the *real* hourly wind generation of 15 European countries.
+how many megawatts will the wind fleet produce?** Weather2Watts takes forecasts from GraphCast,
+Pangu-Weather, FuXi, GenCast and ECMWF AIFS, plus the physics-based ECMWF IFS/HRES. It turns them
+into wind power and scores them against the *real* hourly generation (ENTSO-E) of 15 European
+countries. A daily live forecast compares ECMWF's AI and physics models out of sample.
 
 <p align="center"><img src="results/europe_mae.png" width="100%"></p>
 
 The idea comes from [Jua's EPT-2 report (arXiv:2507.09703)](https://arxiv.org/abs/2507.09703): the
 models that matter for energy should be judged on energy-relevant targets, not on the variables
 ML benchmarks happen to use. WeatherBench2 compares models on gridded weather and stationbench
-compares them on station observations. EnergyBench goes one step further downstream, to the power
-grid. Everything is open data and runs on a laptop in about 5 minutes.
+compares them on station observations. Weather2Watts goes one step further downstream, to the
+power grid. Everything is open data and runs on a laptop in about 5 minutes.
 
 ## Live: tomorrow's wind power
 
@@ -170,7 +179,7 @@ python scripts/backtest_live.py   # optional, ~1.5 GB / 30 min: re-fits results/
 ```
 
 **Add your model:** put its 10 m wind speed on the WB2 1.5° grid as a zarr and add one line to
-`MODELS` in [`energybench/config.py`](energybench/config.py). Or write `data/fc_<name>.npz` with
+`MODELS` in [`weather2watts/config.py`](weather2watts/config.py). Or write `data/fc_<name>.npz` with
 `ws (init, lead, lat, lon)`, `inits`, `leads` (hours), `lat`, `lon`, cut to the box in
 `config.BOX`. `run_benchmark.py` picks up every `fc_*.npz` it finds.
 

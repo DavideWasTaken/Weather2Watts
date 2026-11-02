@@ -1,11 +1,28 @@
 [project]
-name = "energybench"
+name = "weather2watts"
 version = "0.1.0"
-description = "How well do AI weather models forecast real European wind power?"
+description = "An open benchmark of AI weather models (GraphCast, Pangu-Weather, FuXi, GenCast, ECMWF AIFS) on real European wind power generation"
 readme = "README.md"
 license = { text = "MIT" }
+authors = [{ name = "Davide Gaglione" }]
 requires-python = ">=3.10"
 dependencies = ["numpy", "pandas", "xarray", "zarr>=3", "fsspec", "aiohttp", "requests", "matplotlib"]
+keywords = [
+    "weather forecasting", "wind power", "wind energy", "renewable energy", "energy forecasting",
+    "benchmark", "machine learning", "graphcast", "pangu-weather", "fuxi", "gencast", "aifs",
+    "ecmwf", "weatherbench", "era5", "entso-e", "capacity factor",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://github.com/DavideWasTaken/Weather2Watts"
+"Live forecast" = "https://github.com/DavideWasTaken/Weather2Watts/blob/main/results/live/latest.md"
 
 [project.optional-dependencies]
 dev = ["pytest"]
@@ -16,7 +33,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["energybench"]
+packages = ["weather2watts"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

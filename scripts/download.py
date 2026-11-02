@@ -14,7 +14,7 @@ import numpy as np
 import xarray as xr
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from energybench.config import (BOX, ERA5_PATH, MAX_LEAD_H, MODELS, OPSD_URL,  # noqa: E402
+from weather2watts.config import (BOX, ERA5_PATH, MAX_LEAD_H, MODELS, OPSD_URL,  # noqa: E402
                                 TEST_INITS, VAR, WB2)
 
 

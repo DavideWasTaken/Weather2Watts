@@ -17,10 +17,10 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from energybench.config import COUNTRIES, EUROPE, MODELS, TRAIN, VAL  # noqa: E402
-from energybench.generation import capacity_factors  # noqa: E402
-from energybench.power import country_cells, fit_with_validation, save_models  # noqa: E402
-from energybench.scoring import csi, mae, paired_diff_ci, recalibrate_cv  # noqa: E402
+from weather2watts.config import COUNTRIES, EUROPE, MODELS, TRAIN, VAL  # noqa: E402
+from weather2watts.generation import capacity_factors  # noqa: E402
+from weather2watts.power import country_cells, fit_with_validation, save_models  # noqa: E402
+from weather2watts.scoring import csi, mae, paired_diff_ci, recalibrate_cv  # noqa: E402
 
 REGIONS = [EUROPE, *COUNTRIES]
 REFERENCE = "IFS HRES"  # paired comparisons are against the operational physics model
