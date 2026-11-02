@@ -1,0 +1,22 @@
+[project]
+name = "energybench"
+version = "0.1.0"
+description = "How well do AI weather models forecast real European wind power?"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = ["numpy", "pandas", "xarray", "zarr>=3", "fsspec", "aiohttp", "requests", "matplotlib"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["energybench"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
