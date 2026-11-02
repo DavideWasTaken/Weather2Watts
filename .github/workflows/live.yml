@@ -1,0 +1,26 @@
+name: live forecast
+on:
+  schedule:
+    - cron: "15 9 * * *"   # after the 00Z IFS run is published
+    - cron: "15 21 * * *"  # after the 12Z run
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: live
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[live]"
+      - run: python scripts/forecast_live.py
+      - name: commit forecast
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results/live
+          git diff --cached --quiet || git commit -m "live forecast $(date -u +%Y-%m-%dT%HZ)"
+          git push

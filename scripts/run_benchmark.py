@@ -19,7 +19,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from energybench.config import COUNTRIES, EUROPE, MODELS, TRAIN, VAL  # noqa: E402
 from energybench.generation import capacity_factors  # noqa: E402
-from energybench.power import country_cells, fit_with_validation  # noqa: E402
+from energybench.power import country_cells, fit_with_validation, save_models  # noqa: E402
 from energybench.scoring import csi, mae, paired_diff_ci, recalibrate_cv  # noqa: E402
 
 REGIONS = [EUROPE, *COUNTRIES]
@@ -55,6 +55,9 @@ def main():
         power[r], alpha, val_mae = fit_with_validation(e_ws[m_tr], y[m_tr], e_ws[m_va], y[m_va], cells)
         meta[r] = dict(alpha=alpha, val_mae_era5=val_mae, cells=int(cells.sum()), low_wind_threshold=float(low[r]))
         print(f"{r:7s} cells {cells.sum():4d}  alpha {alpha:g}  ERA5 val MAE {val_mae:.4f}")
+    clim_arr = np.array([[clim[r].get((m, h), np.nan) for r in REGIONS]
+                         for m in range(1, 13) for h in (0, 6, 12, 18)]).reshape(12, 4, len(REGIONS))
+    save_models(out / "power_models.npz", power, lat, lon, clim_arr.astype(np.float32))
 
     # ---- forecasts on a common set of inits ----
     fcs = {n: np.load(data / f"fc_{n}.npz") for n in MODELS if (data / f"fc_{n}.npz").exists()}

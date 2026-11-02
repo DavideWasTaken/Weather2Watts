@@ -74,6 +74,46 @@ def test_ridge_learns_power_curve():
     assert isinstance(model, RidgePower)
 
 
+def test_regrid_matches_cell_mean():
+    from energybench.live import regrid
+
+    lat = 90 - 0.25 * np.arange(721)
+    lon = -180 + 0.25 * np.arange(1440)
+    const = np.full((2, 721, 1440), 7.0)
+    assert np.allclose(regrid(const, lat, lon, LAT, LON), 7.0)
+    # a field linear in longitude averages to its value at the cell centre, across the dateline too
+    lin = np.broadcast_to(np.cos(np.deg2rad(lon)), (721, 1440))
+    out = regrid(lin, lat, lon, np.array([45.0]), np.array([0.0, 179.25, -12.0]))
+    assert np.allclose(out, np.cos(np.deg2rad([0.0, 179.25, -12.0])), atol=2e-3)
+
+
+def test_energy_charts_parse_centres_hours():
+    from energybench.observed import parse
+
+    t0 = int(pd.Timestamp("2026-01-01T00:00").timestamp())
+    secs = [t0 + 900 * i for i in range(8)]  # 15-min stamps 00:00 .. 01:45
+    d = {"unix_seconds": secs, "production_types": [
+        {"name": "Wind onshore", "data": [float(i) for i in range(8)]},
+        {"name": "Wind offshore", "data": [1.0] * 7 + [None]},
+        {"name": "Solar", "data": [99.0] * 8}]}
+    gen = parse(d)
+    # hour 01:00 averages the quarters whose midpoints are in [00:30, 01:30): 00:30..01:15
+    assert gen[pd.Timestamp("2026-01-01T01:00")] == pytest.approx(np.mean([2, 3, 4, 5]) + 1)
+
+
+def test_power_models_roundtrip(tmp_path):
+    from energybench.power import load_models, save_models
+
+    rng = np.random.default_rng(3)
+    ws = rng.uniform(0, 15, (300, len(LAT), len(LON))).astype(np.float32)
+    cells = country_cells(LAT, LON, "DE")
+    m = RidgePower(cells, 0.01).fit(ws, power_curve(ws[:, cells].mean(1)))
+    save_models(tmp_path / "pm.npz", {"DE": m}, LAT, LON, np.zeros((12, 4, 1)))
+    loaded, lat, lon, clim = load_models(tmp_path / "pm.npz")
+    assert np.allclose(loaded["DE"].predict(ws), m.predict(ws))
+    assert clim.shape == (12, 4, 1)
+
+
 def test_benchmark_end_to_end(data_dir, tmp_path):
     out = tmp_path / "res"
     subprocess.run([sys.executable, str(ROOT / "scripts/run_benchmark.py"), "--data", str(data_dir),

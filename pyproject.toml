@@ -9,6 +9,7 @@ dependencies = ["numpy", "pandas", "xarray", "zarr>=3", "fsspec", "aiohttp", "re
 
 [project.optional-dependencies]
 dev = ["pytest"]
+live = ["ecmwf-opendata", "eccodes"]
 
 [build-system]
 requires = ["setuptools>=68"]

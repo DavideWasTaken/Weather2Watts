@@ -1,0 +1,151 @@
+{
+ "inits": [
+  "2026-07-30",
+  "2026-10-27",
+  90
+ ],
+ "countries": [
+  "DE",
+  "FR",
+  "ES",
+  "IT",
+  "PL",
+  "SE",
+  "DK",
+  "NL",
+  "BE",
+  "IE",
+  "PT",
+  "AT",
+  "FI",
+  "NO"
+ ],
+ "summary": [
+  {
+   "model": "ECMWF AIFS",
+   "track": "raw",
+   "lead": 1,
+   "mae": 0.0831911177488281,
+   "bias": -0.03487461896031865
+  },
+  {
+   "model": "ECMWF AIFS",
+   "track": "raw",
+   "lead": 3,
+   "mae": 0.10161002394952201,
+   "bias": -0.05044538125152027
+  },
+  {
+   "model": "ECMWF AIFS",
+   "track": "raw",
+   "lead": 5,
+   "mae": 0.1289708635238267,
+   "bias": -0.059051139906695645
+  },
+  {
+   "model": "ECMWF AIFS",
+   "track": "recal",
+   "lead": 1,
+   "mae": 0.0774414968087829,
+   "bias": 0.0001783708322720058
+  },
+  {
+   "model": "ECMWF AIFS",
+   "track": "recal",
+   "lead": 3,
+   "mae": 0.09378863526598057,
+   "bias": 7.046369213869879e-05
+  },
+  {
+   "model": "ECMWF AIFS",
+   "track": "recal",
+   "lead": 5,
+   "mae": 0.12243116796534434,
+   "bias": 4.833481724404083e-05
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "raw",
+   "lead": 1,
+   "mae": 0.08565081419204783,
+   "bias": -0.013676398105727544
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "raw",
+   "lead": 3,
+   "mae": 0.1062123336148653,
+   "bias": -0.023865712028457116
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "raw",
+   "lead": 5,
+   "mae": 0.1409800789167438,
+   "bias": -0.02470771720369076
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "recal",
+   "lead": 1,
+   "mae": 0.08133947470906733,
+   "bias": 4.360575900841697e-05
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "recal",
+   "lead": 3,
+   "mae": 0.10244976413503418,
+   "bias": -3.4556852601323736e-05
+  },
+  {
+   "model": "ECMWF IFS",
+   "track": "recal",
+   "lead": 5,
+   "mae": 0.13673807072294294,
+   "bias": -0.00040972865906004546
+  },
+  {
+   "model": "climatology",
+   "track": "raw",
+   "lead": 1,
+   "mae": 0.17713459470084322,
+   "bias": -0.026993073413574105
+  },
+  {
+   "model": "climatology",
+   "track": "raw",
+   "lead": 3,
+   "mae": 0.17928429919378058,
+   "bias": -0.026799369692985152
+  },
+  {
+   "model": "climatology",
+   "track": "raw",
+   "lead": 5,
+   "mae": 0.1814728515563793,
+   "bias": -0.02402123417350146
+  },
+  {
+   "model": "persistence",
+   "track": "raw",
+   "lead": 1,
+   "mae": 0.2111581275510204,
+   "bias": 0.022523057256235827
+  },
+  {
+   "model": "persistence",
+   "track": "raw",
+   "lead": 3,
+   "mae": 0.24055377551020407,
+   "bias": 0.0199637358276644
+  },
+  {
+   "model": "persistence",
+   "track": "raw",
+   "lead": 5,
+   "mae": 0.24803400680272109,
+   "bias": 0.019799116780045357
+  }
+ ]
+}

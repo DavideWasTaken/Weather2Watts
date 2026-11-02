@@ -41,6 +41,27 @@ class RidgePower:
         x = (features(ws, self.cells) - self.mu) / self.sd
         return np.clip(x @ self.w + self.b, 0.0, 1.1)
 
+    def state(self, prefix):
+        return {f"{prefix}{k}": np.asarray(getattr(self, k)) for k in ("cells", "alpha", "mu", "sd", "w", "b")}
+
+    @classmethod
+    def from_state(cls, arrays, prefix):
+        m = cls(arrays[f"{prefix}cells"], float(arrays[f"{prefix}alpha"]))
+        m.mu, m.sd, m.w, m.b = (arrays[f"{prefix}{k}"] for k in ("mu", "sd", "w", "b"))
+        return m
+
+
+def save_models(path, models, lat, lon, clim):
+    """Fitted models + grid + (month, hour) climatology, so forecasts need no history."""
+    arrays = {k: v for r, m in models.items() for k, v in m.state(f"{r}/").items()}
+    np.savez_compressed(path, lat=lat, lon=lon, regions=np.array(list(models)), clim=clim, **arrays)
+
+
+def load_models(path):
+    a = np.load(path)
+    models = {str(r): RidgePower.from_state(a, f"{r}/") for r in a["regions"]}
+    return models, a["lat"], a["lon"], a["clim"]
+
 
 def fit_with_validation(ws_tr, y_tr, ws_va, y_va, cells, alphas=(1e-6, 1e-5, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 0.1, 0.3, 1.0)):
     """Pick the ridge strength on the validation year, refit on train + val."""

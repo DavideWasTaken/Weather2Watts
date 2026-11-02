@@ -12,6 +12,47 @@ ML benchmarks happen to use. WeatherBench2 compares models on gridded weather an
 compares them on station observations. EnergyBench goes one step further downstream, to the power
 grid. Everything is open data and runs on a laptop in about 5 minutes.
 
+## Live: tomorrow's wind power
+
+The same power models also run on today's forecasts. Twice a day a GitHub Action fetches the
+latest ECMWF **IFS** (physics) and **AIFS** (AI) runs from ECMWF open data and converts them to
+wind capacity factors for the 15 countries. It also commits the chart, a table for tomorrow
+([`results/live/latest.md`](results/live/latest.md)) and an archive of every run, so the
+forecasts can be checked against what actually happened.
+
+<p align="center"><img src="results/live/latest.png" width="100%"></p>
+
+### Does it work? A 90-day backtest
+
+[`scripts/backtest_live.py`](scripts/backtest_live.py) replays the pipeline on the last 90 daily
+00Z runs, fetched from ECMWF's cloud mirrors. It scores them against observed generation from
+[Energy-Charts](https://energy-charts.info) (Fraunhofer ISE, ENTSO-E data) in the 14 countries
+it covers; GB is not available there. The window was 30 Jul to 27 Oct 2026, and the table shows
+MAE of the capacity factor in percentage points, averaged over countries, with bias in brackets:
+
+| forecast | D+1 | D+3 | D+5 |
+|---|---|---|---|
+| ECMWF AIFS (recal) | **7.7** (+0.0) | **9.4** (+0.0) | **12.2** (+0.0) |
+| ECMWF IFS (recal) | 8.1 (+0.0) | 10.2 (-0.0) | 13.7 (-0.0) |
+| ECMWF AIFS (raw) | 8.3 (-3.5) | 10.2 (-5.0) | 12.9 (-5.9) |
+| ECMWF IFS (raw) | 8.6 (-1.4) | 10.6 (-2.4) | 14.1 (-2.5) |
+| climatology | 17.7 (-2.7) | 17.9 (-2.7) | 18.1 (-2.4) |
+| persistence | 21.1 (+2.3) | 24.1 (+2.0) | 24.8 (+2.0) |
+
+* **The live pipeline is as good as the historical benchmark.** For IFS, per-country errors are
+  8.1 / 10.2 / 13.7 at D+1 / D+3 / D+5, against 7.3 / 9.1 / 13.2 in the 2020 benchmark. Day-ahead
+  error is less than half that of climatology.
+* **ECMWF's AI model beats its physics model for wind power,** in 12-14 of 14 countries at every
+  lead after recalibration. The mean gain is 0.4 / 0.9 / 1.4 points, with 95% intervals that
+  exclude zero (bootstrap over countries).
+* **Both models under-forecast today's fleet,** AIFS by up to 6 points. Turbines installed since
+  2019 deliver more power at the same wind than the 2015-2019 power models expect. The live
+  forecast therefore applies the per-country, per-lead `a + b·cf` fitted in the backtest
+  ([`results/live/recal.json`](results/live/recal.json)). GB and the Europe aggregate have no
+  observations here, so they stay raw.
+
+<p align="center"><img src="results/live/backtest.png" width="100%"></p>
+
 ## Leaderboard: European wind fleet, Jan–Sep 2020
 
 Mean absolute error of the capacity factor in percentage points, for 548 forecasts initialized at
@@ -120,6 +161,14 @@ python scripts/plot.py            # figures + results/leaderboard.md
 pytest                            # synthetic end-to-end test, no downloads
 ```
 
+Live forecast only (no benchmark data needed, ~5 MB download):
+
+```bash
+pip install -e ".[live]"
+python scripts/forecast_live.py   # -> results/live/latest.{png,md,json}
+python scripts/backtest_live.py   # optional, ~1.5 GB / 30 min: re-fits results/live/recal.json
+```
+
 **Add your model:** put its 10 m wind speed on the WB2 1.5° grid as a zarr and add one line to
 `MODELS` in [`energybench/config.py`](energybench/config.py). Or write `data/fc_<name>.npz` with
 `ws (init, lead, lat, lon)`, `inits`, `leads` (hours), `lat`, `lon`, cut to the box in
@@ -144,6 +193,8 @@ pytest                            # synthetic end-to-end test, no downloads
 
 OPSD time series: see the [OPSD terms](https://data.open-power-system-data.org/time_series/)
 (sourced from ENTSO-E and TSOs). Forecasts and ERA5: [WeatherBench2](https://github.com/google-research/weatherbench2),
-which redistributes ECMWF and model-developer data under their respective licenses. Inspired by
+which redistributes ECMWF and model-developer data under their respective licenses. Live
+forecasts: [ECMWF open data](https://www.ecmwf.int/en/forecasts/datasets/open-data), © ECMWF,
+CC BY 4.0. Inspired by
 [EPT-2](https://arxiv.org/abs/2507.09703) and [stationbench](https://github.com/juaAI/stationbench).
 Code: MIT.
