@@ -1,7 +1,7 @@
 [project]
 name = "weather2watts"
 version = "0.1.0"
-description = "An open benchmark of AI weather models (GraphCast, Pangu-Weather, FuXi, GenCast, ECMWF AIFS) on real European wind power generation"
+description = "A small, open check of how AI weather forecasts (GraphCast, Pangu-Weather, FuXi, GenCast, ECMWF AIFS) translate into real European wind power"
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "Davide Gaglione" }]

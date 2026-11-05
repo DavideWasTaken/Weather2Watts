@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use Weather2Watts, please cite it as below."
-title: "Weather2Watts: an open benchmark of AI weather models on real wind power generation"
+title: "Weather2Watts: a small, open check of how AI weather forecasts translate into real wind power"
 abstract: >-
   Forecasts from AI weather models (GraphCast, Pangu-Weather, FuXi, GenCast, ECMWF AIFS) and the
   physics-based ECMWF IFS/HRES are converted to wind power and scored against observed hourly
